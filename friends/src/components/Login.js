@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios'; 
 
 class Login extends React.Component {
 //INITIAL STATE
@@ -19,14 +20,23 @@ handleChange = e => {
     });
 };
 
-login = () => {
+login = e => {
 e.preventDefault();
-
+axios.post('http://localhost:5000/api/login', this.state.credentials)
+.then(res=> {
+  localStorage.setItem('token', res.data.payload);
+  this.props.history.push('/friends');
+  console.log(res)
+})
+.catch(err => {
+  console.log(err)
+})
 }
 
   render() {
     return (
       <div>
+        <h1>Log in to see your friends!</h1>
         <form onSubmit={this.login}>
         <label>
             Step 1)     
